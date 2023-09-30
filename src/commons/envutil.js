@@ -26,6 +26,12 @@ export function onFastly() {
   return envManager.get("CLOUD_PLATFORM") === "fastly";
 }
 
+export function onFastEdge() {
+  if (!envManager) return false;
+
+  return envManager.get("CLOUD_PLATFORM") === "fastedge";
+}
+
 export function onCloudflare() {
   if (!envManager) return false;
 
@@ -37,7 +43,7 @@ export function onCloudflare() {
 export function onLocal() {
   if (!envManager) return false;
 
-  return !onFly() && !onDenoDeploy() && !onCloudflare() && !onFastly();
+  return !onFly() && !onDenoDeploy() && !onCloudflare() && !onFastly() && !onFastEdge();
 }
 
 export function hasDisk() {
@@ -46,7 +52,7 @@ export function hasDisk() {
 }
 
 export function hasDynamicImports() {
-  if (onDenoDeploy() || onCloudflare() || onFastly()) return false;
+  if (onDenoDeploy() || onCloudflare() || onFastly() || onFastEdge()) return false;
   return true;
 }
 
@@ -64,6 +70,12 @@ export function isFastly() {
   if (!envManager) return false;
 
   return envManager.r() === "fastly";
+}
+
+export function isFastEdge() {
+  if (!envManager) return false;
+
+  return envManager.r() === "fastedge";
 }
 
 export function isNode() {

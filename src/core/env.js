@@ -41,6 +41,11 @@ const defaults = new Map(
       type: "string",
       default: "development",
     },
+      // the env stage fastedge is running in
+      FASTEDGE_ENV: {
+          type: "string",
+          default: "development",
+      },
     // the env stage nodejs is running in
     NODE_ENV: {
       type: "string",
@@ -257,6 +262,10 @@ function _determineRuntime() {
     return "deno";
   }
 
+    if (typeof fastedge !== "undefined") {
+        return "fastedge";
+    }
+
   if (globalThis.wenv) return "worker";
 
   if (typeof process !== "undefined") {
@@ -294,6 +303,7 @@ export default class EnvManager {
     if (this.runtime === "worker") return this.get("WORKER_ENV");
     if (this.runtime === "deno") return this.get("DENO_ENV");
     if (this.runtime === "fastly") return this.get("FASTLY_ENV");
+    if (this.runtime === "fastedge") return this.get("FASTEDGE_ENV");
     return null;
   }
 
@@ -320,6 +330,7 @@ export default class EnvManager {
     // if prod, then worker is likely running on cloudflare
     if (this.runtime === "worker") return "cloudflare";
     if (this.runtime === "fastly") return "fastly";
+    if (this.runtime === "fastedge") return "fastedge";
 
     return null;
   }
@@ -368,6 +379,8 @@ export default class EnvManager {
       v = Deno.env.get(k);
     } else if (this.runtime === "fastly") {
       v = fastlyEnv.get(k);
+    } else if (this.runtime === "fastedge") {
+        v = fastedgeEnv.get(k);
     } else if (this.runtime === "worker") {
       v = globalThis.wenv[k];
     }

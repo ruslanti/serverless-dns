@@ -1,0 +1,6 @@
+package gcore:fastedge
+
+world reactor {
+    import http
+    export http-handler
+}

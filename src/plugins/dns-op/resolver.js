@@ -474,6 +474,19 @@ DNSResolver.prototype.resolveDnsFromCache = async function (rxid, packet) {
 };
 
 /**
+ * Resolve DNS request using fetch
+ * @param {Request} request - Request object
+ * @returns {Promise<Response>}
+ */
+DNSResolver.prototype.fetch = async function (request) {
+  //TODO use global fetch for the rest
+  //if envutil.isFastEdge() {
+    let r = new Response({status: 505, headers: {}});
+    return Promise.resolve(r);
+  //}
+}
+
+/**
  * Resolve DNS request using HTTP/2 API of Node.js
  * @param {String} rxid - request id
  * @param {Request} request - Request object
